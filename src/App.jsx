@@ -31,7 +31,9 @@ function App() {
 
   const goTo = (idx) => {
     setCurrentSection(idx);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // DOM再描画後にスクロール（即時 + smooth フォールバック）
+    window.scrollTo(0, 0);
+    setTimeout(() => window.scrollTo(0, 0), 50);
   };
 
   const next = () => {
