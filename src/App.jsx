@@ -75,13 +75,13 @@ function App() {
       document.body.removeChild(ta);
     }
     setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
-  };
-
-  const handleOpenMail = () => {
-    const subject = encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答');
-    const body = encodeURIComponent('クリップボードにコピーした回答内容をここに貼り付けてください。');
-    window.location.href = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${subject}&body=${body}`;
+    setTimeout(() => setCopied(false), 5000);
+    // コピー後にメールアプリを開く
+    setTimeout(() => {
+      const subject = encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答');
+      const mailBody = encodeURIComponent('↓ここに貼り付けてください↓\n\n');
+      window.location.href = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${subject}&body=${mailBody}`;
+    }, 100);
   };
 
   return (
@@ -202,12 +202,8 @@ function App() {
               </button>
             ) : (
               <div className="submit-area">
-                <p className="submit-guide">「① 回答をコピー」してから「② メールを開く」で送信してください</p>
                 <button className="btn btn--submit" onClick={handleCopyAndSend}>
-                  {copied ? '✓ コピーしました！' : '① 回答をコピー'}
-                </button>
-                <button className="btn btn--copy" onClick={handleOpenMail}>
-                  ② メールを開く
+                  {copied ? '✓ コピー済み！メールに貼り付けてください' : '回答をコピーしてメールで送信'}
                 </button>
                 <p className="submit-email">送信先: komedorobouinuzini@yahoo.co.jp</p>
               </div>
