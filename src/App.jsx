@@ -5,8 +5,7 @@ import './App.css';
 function App() {
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
   const sectionQuestions = questions.filter(q => q.section === sections[currentSection]);
   const progress = Math.round(((currentSection + 1) / sections.length) * 100);
   const answeredCount = Object.keys(answers).filter(k => {
@@ -63,62 +62,27 @@ function App() {
     return body;
   };
 
-  const handleSubmit = async () => {
-    const body = buildEmailBody();
-    const encoded = encodeURIComponent(body);
-    if (encoded.length > 1800) {
-      const ok = await handleCopyToClipboard();
-      if (ok) setSent(true);
-      return;
-    }
-    setSending(true);
-    const mailtoLink = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答')}&body=${encoded}`;
-    window.location.href = mailtoLink;
-    setTimeout(() => {
-      setSending(false);
-      setSent(true);
-    }, 300);
-  };
-
-  const handleCopyToClipboard = async () => {
+  const handleCopyAndSend = async () => {
     const body = buildEmailBody();
     try {
       await navigator.clipboard.writeText(body);
-      alert('回答内容をクリップボードにコピーしました！\nメールに貼り付けて komedorobouinuzini@yahoo.co.jp へお送りください。');
-      return true;
     } catch {
       const ta = document.createElement('textarea');
       ta.value = body;
       document.body.appendChild(ta);
       ta.select();
-      const success = document.execCommand('copy');
+      document.execCommand('copy');
       document.body.removeChild(ta);
-      if (success) {
-        alert('回答内容をクリップボードにコピーしました！\nメールに貼り付けて komedorobouinuzini@yahoo.co.jp へお送りください。');
-        return true;
-      } else {
-        alert('コピーに失敗しました。お手数ですが手動で選択してコピーしてください。');
-        return false;
-      }
     }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   };
 
-  if (sent) {
-    return (
-      <div className="app">
-        <div className="sent-screen">
-          <div className="sent-icon">✓</div>
-          <h1>送信完了</h1>
-          <p>ヒアリングシートの回答ありがとうございました。</p>
-          <p className="sent-sub">メールアプリが開かなかった場合は「回答をコピー」ボタンをご利用ください。</p>
-          <div className="sent-actions">
-            <button className="btn btn--primary" onClick={handleCopyToClipboard}>回答をコピー</button>
-            <button className="btn btn--secondary" onClick={() => { setSent(false); goTo(0); }}>最初に戻る</button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleOpenMail = () => {
+    const subject = encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答');
+    const body = encodeURIComponent('クリップボードにコピーした回答内容をここに貼り付けてください。');
+    window.location.href = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${subject}&body=${body}`;
+  };
 
   return (
     <div className="app">
@@ -238,12 +202,14 @@ function App() {
               </button>
             ) : (
               <div className="submit-area">
-                <button className="btn btn--submit" onClick={handleSubmit} disabled={sending}>
-                  {sending ? '送信中...' : 'メールで送信'}
+                <p className="submit-guide">「① 回答をコピー」してから「② メールを開く」で送信してください</p>
+                <button className="btn btn--submit" onClick={handleCopyAndSend}>
+                  {copied ? '✓ コピーしました！' : '① 回答をコピー'}
                 </button>
-                <button className="btn btn--copy" onClick={handleCopyToClipboard}>
-                  回答をコピー
+                <button className="btn btn--copy" onClick={handleOpenMail}>
+                  ② メールを開く
                 </button>
+                <p className="submit-email">送信先: komedorobouinuzini@yahoo.co.jp</p>
               </div>
             )}
           </div>
