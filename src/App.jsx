@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import questions, { sections } from './questions';
 import './App.css';
 
@@ -7,11 +7,13 @@ function App() {
   const [answers, setAnswers] = useState({});
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const topRef = useRef(null);
-
   const sectionQuestions = questions.filter(q => q.section === sections[currentSection]);
-  const progress = Math.round(((currentSection) / sections.length) * 100);
-  const answeredCount = Object.keys(answers).filter(k => answers[k] && (Array.isArray(answers[k]) ? answers[k].length > 0 : answers[k].length > 0)).length;
+  const progress = Math.round((currentSection / (sections.length - 1)) * 100);
+  const answeredCount = Object.keys(answers).filter(k => {
+    const v = answers[k];
+    if (Array.isArray(v)) return v.length > 0;
+    return typeof v === 'string' && v.trim().length > 0;
+  }).length;
 
   const handleChange = (id, value) => {
     setAnswers(prev => ({ ...prev, [id]: value }));
@@ -29,7 +31,7 @@ function App() {
 
   const goTo = (idx) => {
     setCurrentSection(idx);
-    topRef.current?.scrollIntoView({ behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const next = () => {
@@ -60,9 +62,14 @@ function App() {
   };
 
   const handleSubmit = () => {
-    setSending(true);
     const body = buildEmailBody();
-    const mailtoLink = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答')}&body=${encodeURIComponent(body)}`;
+    const encoded = encodeURIComponent(body);
+    if (encoded.length > 1800) {
+      handleCopyToClipboard();
+      return;
+    }
+    setSending(true);
+    const mailtoLink = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答')}&body=${encoded}`;
     window.location.href = mailtoLink;
     setTimeout(() => {
       setSending(false);
@@ -80,9 +87,13 @@ function App() {
       ta.value = body;
       document.body.appendChild(ta);
       ta.select();
-      document.execCommand('copy');
+      const success = document.execCommand('copy');
       document.body.removeChild(ta);
-      alert('回答内容をクリップボードにコピーしました！');
+      if (success) {
+        alert('回答内容をクリップボードにコピーしました！\nメールに貼り付けて komedorobouinuzini@yahoo.co.jp へお送りください。');
+      } else {
+        alert('コピーに失敗しました。お手数ですが手動で選択してコピーしてください。');
+      }
     }
   };
 
@@ -104,7 +115,7 @@ function App() {
   }
 
   return (
-    <div className="app" ref={topRef}>
+    <div className="app">
       <header className="header">
         <div className="header-inner">
           <h1 className="logo">和泉出版印刷<span>HP制作ヒアリングシート</span></h1>
@@ -120,12 +131,17 @@ function App() {
           <ul>
             {sections.map((s, i) => {
               const sQs = questions.filter(q => q.section === s);
-              const sAns = sQs.filter(q => answers[q.id] && (Array.isArray(answers[q.id]) ? answers[q.id].length > 0 : answers[q.id].length > 0)).length;
+              const sAns = sQs.filter(q => {
+                const v = answers[q.id];
+                if (Array.isArray(v)) return v.length > 0;
+                return typeof v === 'string' && v.trim().length > 0;
+              }).length;
               return (
                 <li key={s}>
                   <button
                     className={`sidebar-btn ${i === currentSection ? 'active' : ''} ${sAns === sQs.length && sQs.length > 0 ? 'complete' : ''}`}
                     onClick={() => goTo(i)}
+                    data-label={s}
                   >
                     <span className="sidebar-num">{i + 1}</span>
                     <span className="sidebar-label">{s}</span>
@@ -146,13 +162,14 @@ function App() {
           <div className="questions">
             {sectionQuestions.map(q => (
               <div className="q-card" key={q.id}>
-                <label className="q-label">
+                <label className="q-label" htmlFor={`q-${q.id}`}>
                   <span className="q-num">Q{q.id}</span>
                   {q.q}
                 </label>
 
                 {q.type === 'text' && (
                   <input
+                    id={`q-${q.id}`}
                     type="text"
                     className="q-input"
                     placeholder={q.placeholder}
@@ -163,6 +180,7 @@ function App() {
 
                 {q.type === 'textarea' && (
                   <textarea
+                    id={`q-${q.id}`}
                     className="q-textarea"
                     placeholder={q.placeholder}
                     value={answers[q.id] || ''}
@@ -177,7 +195,7 @@ function App() {
                       <button
                         key={opt}
                         className={`q-option ${answers[q.id] === opt ? 'selected' : ''}`}
-                        onClick={() => handleChange(q.id, opt)}
+                        onClick={() => handleChange(q.id, answers[q.id] === opt ? '' : opt)}
                         type="button"
                       >
                         {opt}
