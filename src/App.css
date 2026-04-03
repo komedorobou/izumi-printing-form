@@ -51,6 +51,7 @@
 /* Sidebar */
 .sidebar {
   position: sticky; top: 80px; height: fit-content;
+  z-index: 1;
 }
 
 .sidebar ul { list-style: none; }
@@ -169,6 +170,14 @@
   border-color: var(--teal);
 }
 
+/* Focus Visible */
+.sidebar-btn:focus-visible,
+.q-option:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
 /* Nav Buttons */
 .nav-buttons {
   display: flex; justify-content: space-between; align-items: center;
@@ -251,11 +260,13 @@
     grid-template-columns: 1fr;
     padding: 72px 16px 32px;
     gap: 20px;
+    overflow: hidden;
   }
 
   .sidebar {
     position: static;
     overflow-x: auto; -webkit-overflow-scrolling: touch;
+    max-width: 100%;
   }
 
   .sidebar ul {
@@ -292,9 +303,12 @@
   .q-option { padding: 7px 14px; font-size: 0.78rem; }
 
   .nav-buttons { flex-direction: column; gap: 10px; }
+  .nav-buttons .btn { width: 100%; text-align: center; justify-content: center; }
   .submit-area { flex-direction: column; width: 100%; }
   .submit-area .btn { width: 100%; }
-  .btn { width: 100%; text-align: center; justify-content: center; }
+
+  .sent-actions { flex-direction: column; width: 100%; }
+  .sent-actions .btn { width: 100%; }
 
   .header-inner { padding: 10px 16px; }
   .logo { font-size: 0.85rem; }
