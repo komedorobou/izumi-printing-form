@@ -8,7 +8,7 @@ function App() {
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const sectionQuestions = questions.filter(q => q.section === sections[currentSection]);
-  const progress = sections.length <= 1 ? 100 : Math.round((currentSection / (sections.length - 1)) * 100);
+  const progress = Math.round(((currentSection + 1) / sections.length) * 100);
   const answeredCount = Object.keys(answers).filter(k => {
     const v = answers[k];
     if (Array.isArray(v)) return v.length > 0;
@@ -72,8 +72,10 @@ function App() {
     setSending(true);
     const mailtoLink = `mailto:komedorobouinuzini@yahoo.co.jp?subject=${encodeURIComponent('【和泉出版印刷】HP制作ヒアリングシート回答')}&body=${encoded}`;
     window.location.href = mailtoLink;
-    setSending(false);
-    setSent(true);
+    setTimeout(() => {
+      setSending(false);
+      setSent(true);
+    }, 300);
   };
 
   const handleCopyToClipboard = async () => {

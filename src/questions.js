@@ -72,7 +72,7 @@ const questions = [
   { id: 64, section: "現在のHP・Web状況", q: "サーバー会社名（わかれば）", type: "text", placeholder: "例：さくらインターネット、Xserver" },
   { id: 65, section: "現在のHP・Web状況", q: "Google Analyticsは導入していますか？", type: "select", options: ["導入済み", "未導入", "わからない"] },
   { id: 66, section: "現在のHP・Web状況", q: "Google Search Consoleは導入していますか？", type: "select", options: ["導入済み", "未導入", "わからない"] },
-  { id: 67, section: "現在のHP・Web状況", q: "Googleマイビジネスは登録していますか？", type: "select", options: ["登録済み", "未登録", "わからない"] },
+  { id: 67, section: "現在のHP・Web状況", q: "Googleビジネスプロフィール（旧：Googleマイビジネス）は登録していますか？", type: "select", options: ["登録済み", "未登録", "わからない"] },
   { id: 68, section: "現在のHP・Web状況", q: "SNSアカウントはありますか？（Instagram）", type: "text", placeholder: "アカウント名またはURL" },
   { id: 69, section: "現在のHP・Web状況", q: "SNSアカウントはありますか？（Facebook）", type: "text", placeholder: "アカウント名またはURL" },
   { id: 70, section: "現在のHP・Web状況", q: "SNSアカウントはありますか？（X / Twitter）", type: "text", placeholder: "アカウント名またはURL" },
@@ -177,7 +177,7 @@ const questions = [
   { id: 161, section: "コンテンツ・原稿", q: "校正の回数・方法を教えてください", type: "text", placeholder: "例：初校・再校の2回、PDFにて" },
   { id: 162, section: "コンテンツ・原稿", q: "色校正は対応していますか？", type: "select", options: ["対応（有料）", "対応（無料）", "非対応"] },
   { id: 163, section: "コンテンツ・原稿", q: "サンプル・見本の提供は可能ですか？", type: "select", options: ["可能", "有料で可能", "不可"] },
-  { id: 164, section: "コンテンツ・原稿", q: "紙の種類・厚さの相談はできますか？", type: "select", options: ["相談可能", "おまかせが多い"] },
+  { id: 164, section: "コンテンツ・原稿", q: "紙の種類・厚さの相談はできますか？", type: "select", options: ["相談可能", "一部対応（標準仕様あり）", "相談不可"] },
   { id: 165, section: "コンテンツ・原稿", q: "その他、HPに掲載したい情報があれば", type: "textarea", placeholder: "" },
 
   // ===== SECTION 9: 技術・機能要件 (166-185) =====
@@ -216,7 +216,7 @@ const questions = [
   { id: 196, section: "運用・保守", q: "SEO対策の継続的なサポートは必要ですか？", type: "select", options: ["必要", "不要", "検討中"] },
   { id: 197, section: "運用・保守", q: "Web広告の運用サポートは必要ですか？", type: "select", options: ["必要", "不要", "検討中"] },
   { id: 198, section: "運用・保守", q: "SNS運用のサポートは必要ですか？", type: "select", options: ["必要", "不要", "検討中"] },
-  { id: 199, section: "運用・保守", q: "HPに関するご担当者のお名前・連絡先", type: "textarea", placeholder: "お名前、電話番号、メールアドレス" },
+  { id: 199, section: "運用・保守", q: "HPに関するご担当者のお名前・連絡先", type: "text", placeholder: "例：山田太郎 / 0725-00-0000 / yamada@izumi-print.co.jp" },
   { id: 200, section: "運用・保守", q: "その他、ご要望・ご質問があればご自由にお書きください", type: "textarea", placeholder: "" },
 ];
 
