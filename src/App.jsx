@@ -65,8 +65,8 @@ function App() {
     const body = buildEmailBody();
     const encoded = encodeURIComponent(body);
     if (encoded.length > 1800) {
-      await handleCopyToClipboard();
-      setSent(true);
+      const ok = await handleCopyToClipboard();
+      if (ok) setSent(true);
       return;
     }
     setSending(true);
@@ -83,6 +83,7 @@ function App() {
     try {
       await navigator.clipboard.writeText(body);
       alert('回答内容をクリップボードにコピーしました！\nメールに貼り付けて komedorobouinuzini@yahoo.co.jp へお送りください。');
+      return true;
     } catch {
       const ta = document.createElement('textarea');
       ta.value = body;
@@ -92,8 +93,10 @@ function App() {
       document.body.removeChild(ta);
       if (success) {
         alert('回答内容をクリップボードにコピーしました！\nメールに貼り付けて komedorobouinuzini@yahoo.co.jp へお送りください。');
+        return true;
       } else {
         alert('コピーに失敗しました。お手数ですが手動で選択してコピーしてください。');
+        return false;
       }
     }
   };
