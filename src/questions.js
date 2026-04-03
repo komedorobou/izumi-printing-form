@@ -215,7 +215,9 @@ const questions = [
   { id: 197, section: "運用・保守", q: "Web広告の運用サポートは必要ですか？", type: "select", options: ["必要", "不要", "検討中"] },
   { id: 198, section: "運用・保守", q: "SNS運用のサポートは必要ですか？", type: "select", options: ["必要", "不要", "検討中"] },
   { id: 199, section: "運用・保守", q: "HPに関するご担当者のお名前・連絡先", type: "text", placeholder: "例：山田太郎 / 0725-00-0000 / yamada@izumi-print.co.jp" },
-  { id: 200, section: "運用・保守", q: "その他、ご要望・ご質問があればご自由にお書きください", type: "textarea", placeholder: "" },
+  { id: 200, section: "運用・保守", q: "HPの完成イメージを一言で表すとどんな感じですか？", type: "text", placeholder: "例：地域密着で信頼される印刷会社の顔になるサイト" },
+  { id: 201, section: "運用・保守", q: "HP制作で一番こだわりたいポイントは？", type: "select", options: ["デザインの美しさ", "情報のわかりやすさ", "問い合わせのしやすさ", "スマホでの見やすさ", "更新のしやすさ", "検索で上位に出ること", "おまかせ"] },
+  { id: 202, section: "運用・保守", q: "その他、ご要望・ご質問があればご自由にお書きください", type: "textarea", placeholder: "" },
 ];
 
 export default questions;
